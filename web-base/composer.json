@@ -1,0 +1,21 @@
+{
+    "name": "artemihx/kafedrajurapropozd",
+    "description": "artem pozd 621",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "artemihx"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.4 | ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "core/Src/",
+            "": "app/"
+        }
+    }
+}
