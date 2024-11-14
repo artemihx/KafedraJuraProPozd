@@ -27,6 +27,8 @@ services:
       - ${WEB_PORT:-10000}:80
     depends_on:
       - db
+    networks:
+      - default
   
   db:
     image: mariadb:10.7
@@ -39,6 +41,8 @@ services:
       MYSQL_PASSWORD: ${PASSWORD:-password}
     volumes:
       - db-dev:/var/lib/mysql
+    networks:
+      - default
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -50,3 +54,5 @@ services:
       - PMA_HOST=db
     depends_on:
       - db
+    networks:
+      - default
