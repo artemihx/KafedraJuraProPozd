@@ -7,6 +7,7 @@ use Model\Post;
 use Model\User;
 use Src\Auth\Auth;
 use Src\Request;
+use Src\Validator\Validator;
 use Src\View;
 class Site
 {
@@ -17,22 +18,40 @@ class Site
     }
     public function hello()
     {
-        return new View('site.hello', ['message' => 'hello working']);
+        return (new View())->render('site.hello', ['message' => 'hello working']);
     }
 
     public function signup(Request $request): string
     {
-        if($request->method==='POST' && User::create($request->all())){
-            app()->route->redirect('/go?id=1');
+        if ($request->method === 'POST') {
+
+            $validator = new Validator($request->all(), [
+                'name' => ['required'],
+                'login' => ['required', 'unique:users,login'],
+                'password' => ['required']
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
+            ]);
+
+            if($validator->fails()){
+                return new View('site.signup',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            }
+
+            if (User::create($request->all())) {
+                app()->route->redirect('/login');
+            }
         }
         return new View('site.signup');
     }
+
 
     public function login(Request $request): string
     {
         if($request->method=== 'GET')
         {
-            return new View('site.login');
+            return (new View())->render('site.login');
         }
 
         if(Auth::attempt($request->all()))
@@ -40,7 +59,7 @@ class Site
             app()->route->redirect('/hello');
         }
 
-        return new View('site.login', ['message' => 'Неправильные логин или пароль']);
+        return (new View)->render('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
     public function logout(Request $request): void

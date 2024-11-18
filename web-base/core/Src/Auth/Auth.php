@@ -33,13 +33,29 @@ class Auth
     }
     public static function user()
     {
-        $id = Session::get('id');
+        $id = Session::get('id') ?? 0;
         return self::$user->findIdentity($id);
+    }
+
+    public static function check(): bool
+    {
+        if (self::user())
+        {
+            return true;
+        }
+        return false;
     }
 
     public static function logout(): bool
     {
         Session::clear('id');
         return true;
+    }
+
+    public static function generateCSRF(): string
+    {
+        $token = md5(time());
+        Session::set('csrf_token', $token);
+        return $token;
     }
 }
