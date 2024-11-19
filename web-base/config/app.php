@@ -13,7 +13,8 @@ return [
     ],
     'validators' => [
         'required' => \Validators\RequireValidator::class,
-        'unique' => \Validators\UniqueValidator::class
+        'unique' => \Validators\UniqueValidator::class,
+        'email' => \Validators\EmailValidator::class
     ],
     'providers' => [
     'kernel' => \Providers\KernelProvider::class,
