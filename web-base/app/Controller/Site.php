@@ -40,7 +40,8 @@ class Site
             }
 
             if (User::create($request->all())) {
-                app()->route->redirect('/login');
+                app()->route->redirect('/hello');
+                return false;
             }
         }
         return new View('site.signup');

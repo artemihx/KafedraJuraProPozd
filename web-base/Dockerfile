@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 # Install extensions
 RUN docker-php-ext-install pdo_mysql zip exif pcntl mysqli gd
 
